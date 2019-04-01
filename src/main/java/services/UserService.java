@@ -2,12 +2,14 @@ package services;
 
 import java.util.List;
 import models.User;
+import enums.Gender;
+import enums.UserStatus;
 
 public interface UserService {
 
-  List<User> getAllUsers();
+  List<User> getAllUsers(List list);
 
-  User addUserByName(String username);
+  public User addUser(List list, Integer age, String username, Gender gender, UserStatus userStatus);
 
   User updateUserByName(String username);
 
