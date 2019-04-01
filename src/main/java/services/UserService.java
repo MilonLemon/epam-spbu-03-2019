@@ -7,15 +7,15 @@ import enums.UserStatus;
 
 public interface UserService {
 
-  List<User> getAllUsers(List list);
+  List<User> getAllUsers();
 
-  public User addUser(List list, Integer age, String username, Gender gender, UserStatus userStatus);
+  User addUser(List list, Integer age, String username, Gender gender, UserStatus userStatus);
 
   User updateUserByName(String username);
 
   User getUserByUsername(String username);
 
-  boolean deleteUserByUserName(String username);
+  boolean deleteUserByUserName(List list, String username);
 
   //TODO: add more interactions with users
 }

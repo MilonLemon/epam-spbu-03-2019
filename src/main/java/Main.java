@@ -3,7 +3,7 @@
 1)удаление пользователя
 2)перевод в другой статус
 3)добавление пользователя
-4)редактирование
+4)поиск
 5)получение всех пользователей с их статусами и т.д
 */
 
@@ -22,7 +22,7 @@ public class Main implements UserService{
 
     Main task = new Main();
 
-    List<User> list = new LinkedList<User>();
+    List<User> list = new LinkedList<>();
 
     User user_1 = new User(24, "Ivan", Gender.MALE, UserStatus.ACTIVE);
     User user_2 = new User(28, "Irina", Gender.FEMALE, UserStatus.INACTIVE);
@@ -30,13 +30,14 @@ public class Main implements UserService{
     list.add(user_1);
     list.add(user_2);
 
-    for (;;) {
+
+    while (true) {
 
       System.out.println("Меню:\n" +
               "1)удаление пользователя\n" +
               "2)перевод в другой статус\n" +
               "3)добавление пользователя\n" +
-              "4)редактирование\n" +
+              "4)поиск пользователя\n" +
               "5)получение всех пользователей с их статусами\n");
 
       System.out.println("Введите номер нужного пункта: ");
@@ -47,11 +48,46 @@ public class Main implements UserService{
       switch (choice) {
         case 1:
           System.out.println("Удаление пользователя:\n");
-
+          System.out.println("Введите имя:\n");
+          String username_1 = scan.next();
+          for (User user : list) {
+            String username = user.getUsername();
+            if (username.equals(username_1))
+              list.remove(user);
+          }
           break;
 
         case 2:
           System.out.println("Перевод в другой статус:\n");
+          System.out.println("Чей статус вы хотите изменить?\n");
+          String username_2 = scan.next();
+          System.out.println("Выберите статус:\n" +
+                  "1)ACTIVE\n" +
+                  "2)INACTIVE\n" +
+                  "3)DELETED\n");
+
+          UserStatus US_1 = UserStatus.DELETED;
+          int number_2 = scan.nextInt();
+          switch (number_2){
+            case 1:
+              US_1 = UserStatus.ACTIVE;
+              break;
+
+            case 2:
+              US_1 = UserStatus.INACTIVE;
+              break;
+
+            case 3:
+              US_1 = UserStatus.DELETED;
+              break;
+          }
+
+        for (User user : list) {
+          String username = user.getUsername();
+          if (username.equals(username_2))
+            user.setUserStatus(US_1);
+        }
+
           break;
 
         case 3:
@@ -61,7 +97,7 @@ public class Main implements UserService{
           Integer age = scan.nextInt();
 
           System.out.println("Введите имя:\n");
-          String username = scan.next();
+          String username_3 = scan.next();
 
           System.out.println("Выберите пол:\n" +
                              "1)FEMALE\n" +
@@ -88,49 +124,53 @@ public class Main implements UserService{
                   "2)INACTIVE\n" +
                   "3)DELETED\n");
 
-          UserStatus US = UserStatus.DELETED;
-          int number_2 = scan.nextInt();
-          switch (number_2){
+          UserStatus US_2 = UserStatus.DELETED;
+          int number_3 = scan.nextInt();
+          switch (number_3){
             case 1:
-              US = UserStatus.ACTIVE;
+              US_2 = UserStatus.ACTIVE;
               break;
 
             case 2:
-              US = UserStatus.INACTIVE;
+              US_2 = UserStatus.INACTIVE;
               break;
 
             case 3:
-              US = UserStatus.DELETED;
+              US_2 = UserStatus.DELETED;
               break;
           }
 
-          task.addUser(list,age, username, G, US);
+          task.addUser(list,age,username_3,G,US_2);
           break;
 
         case 4:
-          System.out.println("Редактирование:\n");
+          System.out.println("Поиск пользователя:\n");
+          System.out.println("Введите имя:\n");
+          String username_4 = scan.next();
+          for (User user : list) {
+            String username = user.getUsername();
+            if (username.equals(username_4))
+              System.out.println(user.getUsername() + "," + user.getAge() + "," + user.getGender() + "," + user.getUserStatus() + "\n");
+          }
+
           break;
 
         case 5:
           System.out.println("Получение всех пользователей с их статусами:\n");
+          for (User user : list) {
+            System.out.println(user.getUsername() + "," + user.getAge() + "," + user.getGender() + "," + user.getUserStatus() + "\n");
+          }
           break;
 
         default:
           System.out.println("Ошибка");
           break;
       }
-
-      for (User user : list) {
-        System.out.println(user.getUsername() + "," + user.getAge() + "," + user.getGender() + "," + user.getUserStatus() + "\n");
-      }
     }
   }
 
   @Override
-  public List<User> getAllUsers(List list) {
-    //for (User user : list) {
-    //  System.out.println(user.getUsername() + "," + user.getAge()+" лет, " + user.getGender() + "," + user.getUserStatus());
-    //}
+  public List<User> getAllUsers() {
     return null;
   }
 
@@ -152,8 +192,7 @@ public class Main implements UserService{
   }
 
   @Override
-  public boolean deleteUserByUserName(String username) {
-
+  public boolean deleteUserByUserName(List list, String username) {
     return false;
   }
 }
